@@ -5,3 +5,17 @@
 %As the model evolves over time, do not edit the already described model. Write a new version of the model. Treat this section as a research log. Not as a research paper.
 %
 %Use the images folder to put all your images. Use \textit{meetings.tex} to maintain a log of all the project meetings and weekly to-do list.
+
+\subsection{Neural network version of BrownBuild}
+
+The BrownBuild initiative classifies failed builds as being brown (unreliable) or safe (true failures). This binary classification is based on a XGBoost classifier. 
+To be able to apply Continual learning approaches, the first step is transform the classification model into a Neural Network (NN): in fact, NN can be used in online learning, so that updates can be done while the model is used instead of retraining from scratch when a modification in needed.
+
+\Do{add parameters tested}
+
+\Do{add final results for this part}
+
+\subsection{Online learning with a NN model for BrownBuild}
+
+This need to be compared to the results of concept drift that was computed in the BrownBuild paper (ADD REF). 
+
