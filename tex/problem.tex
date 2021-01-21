@@ -1,0 +1,70 @@
+\section{Problem Statement}
+
+%\begin{itemize}
+%    \item Write a clear problem statement.
+%    \item List the baselines that you should compare with.
+%    \item Explain the dataset or environment you will be using.
+%    \item Explain the metrics that you should use for the comparison.
+%\end{itemize}  
+
+
+We aim at automating the updates of machine learning models used in the context software products such as game development tools. To do so, we identified three research questions: 
+
+\begin{description}
+	\item[RQ1]: Can we accurately determine when to retrain/update a learning process, based on the performance of the model or changes in the data’s behavior over time? 
+	\item[RQ2]: Can we accurately determine the dataset to use for re-training/updating a learning process to improve the process’ performance while reducing the training dataset size?
+	\item[RQ3]: Can we maintain the learning process’ performance when the use-cases switch to another development phase or during and after punctual events/accidents?
+\end{description}
+
+The project is done in collaboration with La Forge, Ubisoft Montréal. They provide us with access to several product used in a large range of projects. To begin with, we start with a dataset used for the BrownBuild initiative, which is composed of build log files. This initiative aimed at identifying unreliable (brown) build jobs.  The BrownBuild project is runned on six different projects at the moment. Those projects differ in language, purposes and build activity.
+
+Concept drift analysis was already started in that initiative (see: BrownBuild paper). The prototype proposed by the initiative uses a XGBoost model. We analysed in the initiative when to retrain the model and what window of data works best for it. This allowed us to keep the F1-score about 2-3 times higher than the baseline used in that project. 
+The baseline that were used in the BrownBuild initiative are discribed in Table~\ref{brownbuild:baselines}
+
+
+
+\begin{table*}[h!]
+	\centering
+	\caption{\label{brownbuild:baselines} Baselines for the BrownBuild initiative (with $BFR$ the brown failure ratio by project). }
+	\begin{tabular}{|r|l|l|l|l|l|}
+		\hline
+		\\[-1em]
+		\textbf{Baseline name}& \textbf{Chances of brown prediction}& \textbf{Precision} & \textbf{Recall} & \textbf{Specificity} & \textbf{F1-score}\\
+		\hline
+		\\[-1em]
+		Random50   &50\%&$BFR$&$\frac{1}{2}$&$\frac{1}{2}$&$\frac{1}{\frac{1}{BFR}+2} = \frac{BFR}{1+2BFR}$\\%\\[-1em]
+		RandomB    &$BFR$\%&$BFR$&$BFR$          &$1-BFR$&$\frac{1}{\frac{1}{BFR}+\frac{1}{BFR}} = \frac{BFR}{2}$\\%\\[-1em]
+		AlwaysBrown&100\%&$BFR$&$1$          &$0$&$\frac{1}{\frac{1}{BFR}+1} = \frac{BFR}{1+BFR}$\\			
+		\hline
+	\end{tabular}
+\end{table*}
+
+
+For this new project, we aim at using concepts of continual learning to improve the BrownBuild initive's performances (F1-score). The first step is thus to switch the XGBoost model to a Neural Network model with similar or better performances. Since Neural Network are incremental learning processes, we are able to update the model without having to recompute it from scratch.
+
+New baselines are identified at this point. 
+\begin{itemize}
+	\item 
+\end{itemize}
+
+%Our two objectives consider two equivalent, complementary approaches to deal with concept drift: (1) choosing the right time to retrain models, and (2) choosing models and learning algorithms that are more efficient at being retrained.
+%From now on, when we will refer to the performance of a model, we will refer to the metric used to validate said model (i.e. accuracy, precision, recall). 
+%
+%
+%\subsection{Obj. 1: Determining the optimal model \& data TTL (Time-to-live)}
+%
+%With learning processes, in the extreme case, each prediction could ask for a new model training to have the latest data included. However, this is not realistic, since training a model takes time and would increase the prediction time. If many predictions need to be made in a day, this could jam the project’s pipeline. Hence:
+%
+%\begin{itemize}
+%	\item Usually, a model has to be used for several predictions, but this brings a new problem to the prediction: how long does my model stay relevant ? This corresponds to determining the model's TTL (time-to-live). The longer the TTL, the lower the frequency of model retraining, but the higher the risk of outdated predictions..
+%	\item A related issue is that we also need to identify how long data stays relevant and when old data should be discarded. Data can get outdated by the project changing over time. Also some periods and events during the development might not be relevant to keep in the dataset, depending on the current situation. Finally, depending on the complexity of the learning algorithm, large training sets require more resources for the training process.
+%\end{itemize}
+%We want to identify when a model should be updated or retrained and which part of the data should be removed from the training set, taking into account the presence of cyclic behavior and punctual events.
+%
+%By identifying the time in the life of a project, as well as the aging of the data and the model, we would select more wisely what to use for the next training and when to do it.
+%
+%\subsection{Obj. 2: Applying continual learning techniques to learning processes}
+%
+%With neural networks, models can be incrementally updated with new data. The study of continual learning is an existing domain studying how the performance of a model evolves across time while new data is added to the training over time. Continual learning does not need a full retraining when the model needs to be updated, which reduces the computation time of model updating. Different continual learning techniques of model updates have been studied in the literature regarding what data to use and how to manage changes in the learning process.
+%
+%However, existing work on continual learning mostly refers to models where new tasks are added overtime, or new classes to identify. In contrast, our use-cases are still learning the same task and the same classes over time. however, since the use-cases show drifting in the dataset’s distribution, the task evolves over time. The use of continual learning promises to improve prediction performance in case of concept drift, while keeping model updates short (incremental), especially when the updates could be done strategically and with the right data observations, using the findings of Objective 1.
